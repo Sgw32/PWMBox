@@ -706,6 +706,7 @@ void StartDefaultTask(void const * argument)
 		lcdPrintStr((uint8_t*)data, strlen(data));
 		IC_Rising_Val=0;
 		IC_Falling_Val=0;
+		HAL_ADC_Start(&hadc1);
 	}
   /* USER CODE END 5 */ 
 }

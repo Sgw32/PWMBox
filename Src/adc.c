@@ -12,7 +12,7 @@ void ADC_init(void)
 	__HAL_RCC_DMA1_CLK_ENABLE();
 	HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 1, 2);
   HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);
-	HAL_ADC_Start_DMA(&hadc1, (uint32_t*)adc_Rdata.data, 2);
+	HAL_ADC_Start_DMA(&hadc1, (uint32_t*)&adc_Rdata.data, 2);
 }
 
 uint16_t GET_VOLT1(void)
