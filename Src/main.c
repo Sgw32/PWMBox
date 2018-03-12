@@ -515,7 +515,7 @@ static void MX_TIM4_Init(void)
   TIM_MasterConfigTypeDef sMasterConfig;
 
   htim4.Instance = TIM4;
-  htim4.Init.Prescaler = 800;
+  htim4.Init.Prescaler = 8000;
   htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim4.Init.Period = 1000;
   htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
@@ -682,30 +682,19 @@ void StartDefaultTask(void const * argument)
 		
 		uint16_t adc1Data1 = GET_VOLT1();
 		uint16_t adc1Data2 = GET_VOLT2();
-		float adc1V1 = (float)adc1Data1 / 4096.f * 3.3f;
-		float adc1V2 = (float)adc1Data2 / 4096.f * 3.3f;
-		for (int i = 0; i < 16; i++)        //num_space_req < 20  
-		{  
-				data[i] = ' ';  
-		}
-		// Set cursor at zero position of line 3
+		float adc1V1 = (float)adc1Data1 / 4095.f * 3.3f * 5.3;
+		float adc1V2 = (float)adc1Data2 / 4095.f * 3.3f * 5.3;
+		//vTaskDelay(100);
 		lcdSetCursorPosition(0, 0);
-		lcdPrintStr((uint8_t*)"               1", 16);
-		lcdSetCursorPosition(0, 1);
-		lcdPrintStr((uint8_t*)"               2", 16);
-		vTaskDelay(100);
-		for (int i = 0; i < 16; i++)        //num_space_req < 20  
-		{  
-				data[i] = ' ';  
-		}
-		lcdSetCursorPosition(0, 0);
-		sprintf(data,"1:%.0f;2:%.0f",pwm_ms,pwm_ms2);
+		sprintf(data,"1:%4.0f          ",pwm_ms);
 		lcdPrintStr((uint8_t*)data, strlen(data));
 		lcdSetCursorPosition(0, 1);
-		sprintf(data,"%.0f;%.0f;%.2f;%.2f",f*1000000,f2*1000000,adc1V1,adc1V2);
+		sprintf(data,"%3.0f;%1.2f;       ",f*1000000,adc1V1);
 		lcdPrintStr((uint8_t*)data, strlen(data));
 		IC_Rising_Val=0;
 		IC_Falling_Val=0;
+		CH2_IC_Rising_Val=0;
+		CH2_IC_Falling_Val=0;
 		HAL_ADC_Start(&hadc1);
 	}
   /* USER CODE END 5 */ 
